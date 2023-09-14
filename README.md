@@ -19,6 +19,12 @@ Restart your shell if necessary.
 
 ## Running the application
 
+First, set up the `.env` file:
+
+`cp .env.example .env`
+
+Next, install dependencies, push the schema to the SQLite database, and start the dev server
+
 ```shell
 bun install
 bun db:push
