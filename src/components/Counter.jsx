@@ -1,18 +1,17 @@
 // LIBRARY IMPORTS
 import React, { useState } from "react";
 
-export default function Counter() {
+export default function Counter({ count, setCount }) {
   // SET STATES
-  const [count, setCount] = useState(0);
   const [incrementValue, setIncrementValue] = useState(1);
 
   // EVENT HANDLERS
   function increaseCount () {
-    setCount((previous) => previous + incrementValue);
+    setCount(count + incrementValue);
   }
 
   function decreaseCount () {
-    setCount((previous) => previous - incrementValue);
+    setCount(count - incrementValue);
   }
 
   return (
