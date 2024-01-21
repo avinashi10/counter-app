@@ -5,11 +5,14 @@ import React, { useEffect, useState, Suspense } from "react";
 // LOCAL IMPORTS
 import Counter from '../components/Counter.jsx';
 import CounterAmountForm from '../components/CounterAmountForm.jsx';
+import { calculateSumCounters } from '../utils/calculateTotal.js';
 
 export default function Home() {
   // SET STATES
   const [counterQuantity, setCounterQuantity] = useState(1);
   const [countersCount, setCountersCount] = useState(Array(counterQuantity).fill(0));
+
+  let sumAllCounters = calculateSumCounters(countersCount);
 
   // HOOKS
   useEffect(() => {
@@ -35,6 +38,7 @@ export default function Home() {
           {Array.from({ length: counterQuantity }, (_, index) => (
           <Counter key={index} count={countersCount[index]} setCount={(newCount) => handleCountersUpdate(index, newCount)} />
           ))}
+          <p className="text-3xl text-white">Grand Total: {sumAllCounters}!</p>
         </React.Suspense>
       </main>
     </>
