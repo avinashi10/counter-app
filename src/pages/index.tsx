@@ -8,7 +8,14 @@ import CounterAmountForm from '../components/CounterAmountForm.jsx';
 
 export default function Home() {
   // SET STATES
-  const [counterQuantity, setCounterQuantity] = useState(2);
+  const [counterQuantity, setCounterQuantity] = useState(1);
+  const [countersCount, setCountersCount] = useState(Array(counterQuantity).fill(0));
+
+  // EVENT HANDLERS
+  const handleCountersUpdate = (index, newCount) => {
+    setCountersCount((prevState) => prevState.map((count, i) => (i === index ? newCount : count))
+    );
+  }
 
   return (
     <>
@@ -21,8 +28,8 @@ export default function Home() {
         <React.Suspense fallback="Loading...">
           <CounterAmountForm setCounterQuantity={setCounterQuantity} />
           {Array.from({ length: counterQuantity }, (_, index) => (
-            <Counter key={index} />
-           ))}
+          <Counter key={index} count={countersCount[index]} setCount={(newCount) => handleCountersUpdate(index, newCount)} />
+          ))}
         </React.Suspense>
       </main>
     </>
