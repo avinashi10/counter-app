@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 export default function Counter({ count, setCount }) {
   // SET STATES
-  const [incrementValue, setIncrementValue] = useState(1);
+  const [incrementValue, setIncrementValue] = useState(localStorage.getItem('incrementValue') || 1);
 
   // EVENT HANDLERS
   function increaseCount () {
@@ -24,7 +24,11 @@ export default function Counter({ count, setCount }) {
           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
           placeholder="Set increment value"
           value={incrementValue}
-          onChange={(e) => setIncrementValue(parseInt(e.target.value) || 1)}
+          onChange={(e) => {
+            const newIncrementValue = parseInt(e.target.value) || 1;
+            setIncrementValue(newIncrementValue);
+            localStorage.setItem('incrementValue', newIncrementValue.toString());
+          }}
         />
       </form>
       <button

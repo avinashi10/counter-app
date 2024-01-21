@@ -9,6 +9,7 @@ export default function CounterAmountForm({ setCounterQuantity }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     setCounterQuantity(inputValue);
+    localStorage.setItem('counterQuantity', inputValue);
   }
   return(
     <form onSubmit={handleSubmit}>
