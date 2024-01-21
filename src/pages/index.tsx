@@ -1,6 +1,6 @@
 // LIBRARY IMPORTS
 import Head from "next/head";
-import React, { useState, Suspense } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 
 // LOCAL IMPORTS
 import Counter from '../components/Counter.jsx';
@@ -10,6 +10,11 @@ export default function Home() {
   // SET STATES
   const [counterQuantity, setCounterQuantity] = useState(1);
   const [countersCount, setCountersCount] = useState(Array(counterQuantity).fill(0));
+
+  // HOOKS
+  useEffect(() => {
+    setCountersCount(Array(counterQuantity).fill(0));
+  }, [counterQuantity]);
 
   // EVENT HANDLERS
   const handleCountersUpdate = (index, newCount) => {
