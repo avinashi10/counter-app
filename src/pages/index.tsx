@@ -9,15 +9,29 @@ import { calculateSumCounters } from '../utils/calculateTotal.js';
 
 export default function Home() {
   // SET STATES
-  const [counterQuantity, setCounterQuantity] = useState(localStorage.getItem('counterQuantity') || 1);
-  const [countersCount, setCountersCount] = useState(JSON.parse(localStorage.getItem('countersCount')) || Array(counterQuantity).fill(0));
+  const [counterQuantity, setCounterQuantity] = useState(1);
+  const [countersCount, setCountersCount] = useState(Array(counterQuantity).fill(0));
 
   let sumAllCounters = calculateSumCounters(countersCount);
 
   // HOOKS
   useEffect(() => {
+    const storedCounterQuantity = localStorage.getItem('counterQuantity');
+    const storedCountersCount = localStorage.getItem('countersCount');
+
+    if (storedCounterQuantity) {
+      setCounterQuantity(parseInt(storedCounterQuantity));
+    }
+
+    if (storedCountersCount) {
+      setCountersCount(JSON.parse(storedCountersCount));
+    }
+  }, [])
+
+  useEffect(() => {
     setCountersCount(Array(counterQuantity).fill(0));
     localStorage.setItem('countersCount', JSON.stringify(Array(counterQuantity).fill(0)))
+    localStorage.setItem('counterQuantity', counterQuantity.toString());
   }, [counterQuantity]);
 
   // EVENT HANDLERS
