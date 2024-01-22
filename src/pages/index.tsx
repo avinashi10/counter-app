@@ -9,62 +9,78 @@ import { calculateSumCounters } from '../utils/calculateTotal.js';
 
 export default function Home() {
   // SET STATES
+  // State for the number of counters. Initialized to 1 by default.
   const [counterQuantity, setCounterQuantity] = useState(1);
-  const [countersCount, setCountersCount] = useState([]);
-
-  let sumAllCounters = calculateSumCounters(countersCount);
+  // State for the details of each counter. Each counter has 'count' and 'incrementValue'.
+  const [counterValues, setCounterValues] = useState([]);
+  const [sumAllCounters, setSumAllCounters] = useState(0);
 
   // HOOKS
+  // useEffect to initialize state from localStorage when the component mounts.
   useEffect(() => {
+    // Retrieve data from localStorage.
     const storedCounterQuantity = localStorage.getItem('counterQuantity');
-    const storedCountersCount = localStorage.getItem('countersCount');
-    console.log('stored count array: ', storedCountersCount);
+    const storedCounterValues = localStorage.getItem('counterValues');
+    const storedSumAll = localStorage.getItem('sumAllCounters');
+    console.log('stored count array: ', storedCounterValues);
 
+    // If values are found in localStorage, update the respective states. Otherwise, set defaults in localStorage.
     if (storedCounterQuantity) {
       setCounterQuantity(parseInt(storedCounterQuantity));
     } else {
       localStorage.setItem('counterQuantity', '1');
     }
 
-    if (storedCountersCount) {
-      setCountersCount(JSON.parse(storedCountersCount));
+    if (storedCounterValues) {
+      setCounterValues(JSON.parse(storedCounterValues));
     } else {
-      const defaultCountersCount = Array.from({ length: counterQuantity }, () => ({
+      const defaultCounterValues = Array.from({ length: counterQuantity }, () => ({
         count: 0,
         incrementValue: 1
       }));
-      setCountersCount(defaultCountersCount);
-      // localStorage.setItem('countersCount', JSON.stringify(defaultCountersCount));
+      setCounterValues(defaultCounterValues);
     }
-  }, [])
 
-  useEffect(() => {
-    localStorage.setItem('countersCount', JSON.stringify(countersCount));
-  }, [countersCount]);
+    if (storedSumAll) {
+      setSumAllCounters(storedSumAll);
+    } else {
+      localStorage.setItem('sumAllCounters', (sumAllCounters(calculateSumCounters(counterValues))).toString);
+    }
+  }, []);
 
+  // useEffect to update the number of counters when 'counterQuantity' changes to ensure that the number of counters in state matches 'counterQuantity'.
   useEffect(() => {
-    setCountersCount(prevState => {
+    setCounterValues(prevState => {
       if (counterQuantity > prevState.length) {
-        // Add new counters with default values
+        // If the quantity increases, add new counters with default values
         return [
           ...prevState,
           ...Array.from({ length: counterQuantity - prevState.length }, () => ({ count: 0, incrementValue: 1 })),
         ];
       } else if (counterQuantity < prevState.length) {
-        // Remove extra counters
+        // If the quantity decreases, remove extra counters
         return prevState.slice(0, counterQuantity);
       } else {
-        // No change in quantity, return previous state
+        // If there's no change in quantity, return previous state
         return prevState;
       }
     });
   }, [counterQuantity]);
 
+  // useEffect to update grand total and localStorage whenever countersCount changes
+  useEffect(() => {
+    const newSum = calculateSumCounters(counterValues);
+    setSumAllCounters(newSum);
+    localStorage.setItem('sumAllCounters', newSum.toString());
+  }, [counterValues]);
+
   // EVENT HANDLERS
+  // This function handle updates to individual counters (both total count and increment value), updates the 'countersCount' state, and synchronizes changes to localStorage.
   const handleCountersUpdate = (index, newCount, newIncrementValue) => {
-    setCountersCount((prevState) => {
+    setCounterValues((prevState) => {
       const updatedCounters = prevState.map((counter, i) => {
         if (i === index) {
+          // Update the specific counter's total count or increment value
           return {
             ...counter,
             count: newCount !== undefined ? newCount : counter.count,
@@ -73,7 +89,7 @@ export default function Home() {
         }
         return counter;
       });
-      localStorage.setItem('countersCount', JSON.stringify(updatedCounters));
+      localStorage.setItem('counterValues', JSON.stringify(updatedCounters));
       return updatedCounters;
     });
   };
@@ -91,8 +107,8 @@ export default function Home() {
           {Array.from({ length: counterQuantity }, (_, index) => (
           <Counter
             key={index}
-            count={countersCount[index]?.count || 0}
-            incrementValue={countersCount[index]?.incrementValue || 1}
+            count={counterValues[index]?.count || 0}
+            incrementValue={counterValues[index]?.incrementValue || 1}
             setCount={(newCount) => handleCountersUpdate(index, newCount, undefined)}
             setIncrementValue={(newIncrementValue) => handleCountersUpdate(index, undefined, newIncrementValue)}
           />

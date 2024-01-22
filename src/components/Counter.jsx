@@ -2,18 +2,8 @@
 import React, { useEffect, useState } from "react";
 
 export default function Counter({ count, setCount, incrementValue, setIncrementValue }) {
-  console.log("count prop: ", count, "inc valu prop: ", incrementValue);
-
   // SET STATES
-  const [inputValue, setInputValue] = useState(1);
-
-  // HOOKS
-  // useEffect(() => {
-  //   const storedIncrementValue = localStorage.getItem('incrementValue');
-  //   if (storedIncrementValue) {
-  //     setIncrementValue(parseInt(storedIncrementValue));
-  //   }
-  // }, [])
+  const [inputValue, setInputValue] = useState('');
 
   // EVENT HANDLERS
   const increaseCount = () => {
@@ -37,7 +27,7 @@ export default function Counter({ count, setCount, incrementValue, setIncrementV
           type="number"
           id="increment-value"
           className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-          placeholder="Set increment value"
+          placeholder={"Set increment value"}
           value={inputValue}
           onChange={(e) => setInputValue(parseInt(e.target.value) || 1)}
         />
