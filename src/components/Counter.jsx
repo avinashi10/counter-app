@@ -26,7 +26,7 @@ export default function Counter({ count, setCount, incrementValue, setIncrementV
           type="number"
           id="increment-value"
           className="w-24 rounded-full border border-teal-300 bg-white py-1 text-center focus:border-teal-500 focus:ring-teal-500"
-          placeholder="Count Increment..."
+          placeholder="Increment..."
           value={inputValue}
           onChange={(e) => setInputValue(parseInt(e.target.value) || 1)}
         />

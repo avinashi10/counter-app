@@ -101,19 +101,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <React.Suspense fallback="Loading...">
-          <CounterAmountForm setCounterQuantity={setCounterQuantity} />
-          {Array.from({ length: counterQuantity }, (_, index) => (
-          <Counter
-            key={index}
-            count={counterValues[index]?.count || 0}
-            incrementValue={counterValues[index]?.incrementValue || 1}
-            setCount={(newCount) => handleCountersUpdate(index, newCount, undefined)}
-            setIncrementValue={(newIncrementValue) => handleCountersUpdate(index, undefined, newIncrementValue)}
-          />
-          ))}
-          <p className="text-3xl text-white">Grand Total: {sumAllCounters}!</p>
-        </React.Suspense>
+        <CounterAmountForm setCounterQuantity={setCounterQuantity} />
+        {Array.from({ length: counterQuantity }, (_, index) => (
+        <Counter
+          key={index}
+          count={counterValues[index]?.count || 0}
+          incrementValue={counterValues[index]?.incrementValue || 1}
+          setCount={(newCount) => handleCountersUpdate(index, newCount, undefined)}
+          setIncrementValue={(newIncrementValue) => handleCountersUpdate(index, undefined, newIncrementValue)}
+        />
+        ))}
+        <p className="text-3xl text-white">Grand Total: {sumAllCounters}!</p>
       </main>
     </>
   );
