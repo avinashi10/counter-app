@@ -34,7 +34,7 @@ export default function Home() {
         incrementValue: 1
       }));
       setCountersCount(defaultCountersCount);
-      localStorage.setItem('countersCount', JSON.stringify(defaultCountersCount));
+      // localStorage.setItem('countersCount', JSON.stringify(defaultCountersCount));
     }
   }, [])
 
@@ -43,9 +43,21 @@ export default function Home() {
   }, [countersCount]);
 
   useEffect(() => {
-    setCountersCount(Array(counterQuantity).fill(0));
-    // localStorage.setItem('countersCount', JSON.stringify(Array(counterQuantity).fill(0)))
-    // localStorage.setItem('counterQuantity', counterQuantity.toString());
+    setCountersCount(prevState => {
+      if (counterQuantity > prevState.length) {
+        // Add new counters with default values
+        return [
+          ...prevState,
+          ...Array.from({ length: counterQuantity - prevState.length }, () => ({ count: 0, incrementValue: 1 })),
+        ];
+      } else if (counterQuantity < prevState.length) {
+        // Remove extra counters
+        return prevState.slice(0, counterQuantity);
+      } else {
+        // No change in quantity, return previous state
+        return prevState;
+      }
+    });
   }, [counterQuantity]);
 
   // EVENT HANDLERS
@@ -81,7 +93,7 @@ export default function Home() {
             key={index}
             count={countersCount[index]?.count || 0}
             incrementValue={countersCount[index]?.incrementValue || 1}
-            setCount={(newCount) => handleCountersUpdate(index, newCount)}
+            setCount={(newCount) => handleCountersUpdate(index, newCount, undefined)}
             setIncrementValue={(newIncrementValue) => handleCountersUpdate(index, undefined, newIncrementValue)}
           />
           ))}

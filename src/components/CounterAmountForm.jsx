@@ -6,11 +6,12 @@ export default function CounterAmountForm({ setCounterQuantity }) {
   const [inputValue, setInputValue] = useState(1);
 
   // EVENT HANDLERS
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = (e) => {
+    e.preventDefault();
     setCounterQuantity(inputValue);
     localStorage.setItem('counterQuantity', inputValue);
   }
+
   return(
     <form onSubmit={handleSubmit}>
       <label htmlFor="counter-quantity" className="text-xl text-white">Number of Counters:</label>

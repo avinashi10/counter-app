@@ -1,3 +1,4 @@
 export const calculateSumCounters = (countersArray) => {
-  return countersArray.reduce((accumulator, counterValue) => accumulator + counterValue, 0);
+  const countValues = countersArray.map((counter) => counter.count)
+  return countValues.reduce((accumulator, counterValue) => accumulator + counterValue, 0);
 }
