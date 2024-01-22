@@ -10,7 +10,7 @@ import { calculateSumCounters } from '../utils/calculateTotal.js';
 export default function Home() {
   // SET STATES
   const [counterQuantity, setCounterQuantity] = useState(1);
-  const [countersCount, setCountersCount] = useState(Array(counterQuantity).fill(0));
+  const [countersCount, setCountersCount] = useState([]);
 
   let sumAllCounters = calculateSumCounters(countersCount);
 
@@ -18,28 +18,51 @@ export default function Home() {
   useEffect(() => {
     const storedCounterQuantity = localStorage.getItem('counterQuantity');
     const storedCountersCount = localStorage.getItem('countersCount');
+    console.log('stored count array: ', storedCountersCount);
 
     if (storedCounterQuantity) {
       setCounterQuantity(parseInt(storedCounterQuantity));
+    } else {
+      localStorage.setItem('counterQuantity', '1');
     }
 
     if (storedCountersCount) {
       setCountersCount(JSON.parse(storedCountersCount));
+    } else {
+      const defaultCountersCount = Array.from({ length: counterQuantity }, () => ({
+        count: 0,
+        incrementValue: 1
+      }));
+      setCountersCount(defaultCountersCount);
+      localStorage.setItem('countersCount', JSON.stringify(defaultCountersCount));
     }
   }, [])
 
   useEffect(() => {
+    localStorage.setItem('countersCount', JSON.stringify(countersCount));
+  }, [countersCount]);
+
+  useEffect(() => {
     setCountersCount(Array(counterQuantity).fill(0));
-    localStorage.setItem('countersCount', JSON.stringify(Array(counterQuantity).fill(0)))
-    localStorage.setItem('counterQuantity', counterQuantity.toString());
+    // localStorage.setItem('countersCount', JSON.stringify(Array(counterQuantity).fill(0)))
+    // localStorage.setItem('counterQuantity', counterQuantity.toString());
   }, [counterQuantity]);
 
   // EVENT HANDLERS
-  const handleCountersUpdate = (index, newCount) => {
+  const handleCountersUpdate = (index, newCount, newIncrementValue) => {
     setCountersCount((prevState) => {
-      const updatedCounts = prevState.map((count, i) => (i === index ? newCount : count));
-      localStorage.setItem('countersCount', JSON.stringify(updatedCounts));
-      return updatedCounts;
+      const updatedCounters = prevState.map((counter, i) => {
+        if (i === index) {
+          return {
+            ...counter,
+            count: newCount !== undefined ? newCount : counter.count,
+            incrementValue: newIncrementValue !== undefined ? newIncrementValue : counter.incrementValue,
+          };
+        }
+        return counter;
+      });
+      localStorage.setItem('countersCount', JSON.stringify(updatedCounters));
+      return updatedCounters;
     });
   };
 
@@ -54,7 +77,13 @@ export default function Home() {
         <React.Suspense fallback="Loading...">
           <CounterAmountForm setCounterQuantity={setCounterQuantity} />
           {Array.from({ length: counterQuantity }, (_, index) => (
-          <Counter key={index} count={countersCount[index]} setCount={(newCount) => handleCountersUpdate(index, newCount)} />
+          <Counter
+            key={index}
+            count={countersCount[index]?.count || 0}
+            incrementValue={countersCount[index]?.incrementValue || 1}
+            setCount={(newCount) => handleCountersUpdate(index, newCount)}
+            setIncrementValue={(newIncrementValue) => handleCountersUpdate(index, undefined, newIncrementValue)}
+          />
           ))}
           <p className="text-3xl text-white">Grand Total: {sumAllCounters}!</p>
         </React.Suspense>

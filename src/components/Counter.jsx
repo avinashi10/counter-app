@@ -1,10 +1,7 @@
 // LIBRARY IMPORTS
 import React, { useEffect, useState } from "react";
 
-export default function Counter({ count, setCount }) {
-  // SET STATES
-  const [incrementValue, setIncrementValue] = useState(1);
-
+export default function Counter({ count, setCount, incrementValue, setIncrementValue }) {
   // HOOKS
   useEffect(() => {
     const storedIncrementValue = localStorage.getItem('incrementValue');
@@ -35,7 +32,6 @@ export default function Counter({ count, setCount }) {
           onChange={(e) => {
             const newIncrementValue = parseInt(e.target.value) || 1;
             setIncrementValue(newIncrementValue);
-            localStorage.setItem('incrementValue', newIncrementValue.toString());
           }}
         />
       </form>
