@@ -9,9 +9,8 @@ import { calculateSumCounters } from '../utils/calculateTotal.js';
 
 export default function Home() {
   // SET STATES
-  // State for the number of counters. Initialized to 1 by default.
   const [counterQuantity, setCounterQuantity] = useState(1);
-  // State for the details of each counter. Each counter has 'count' and 'incrementValue'.
+  // State for the details of each counter. Each counter has 'count' and 'incrementValue' values.
   const [counterValues, setCounterValues] = useState([]);
   const [sumAllCounters, setSumAllCounters] = useState(0);
 

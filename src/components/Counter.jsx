@@ -20,37 +20,38 @@ export default function Counter({ count, setCount, incrementValue, setIncrementV
   };
 
   return (
-    <>
-      <form onSubmit={handleIncrementSubmit}>
-        <label htmlFor="increment-value" className="text-xl text-white">Increment/Decrement By:</label>
+    <div className="flex flex-col items-center justify-center space-y-4 bg-teal-100 p-6 rounded-xl shadow-lg">
+      <form onSubmit={handleIncrementSubmit} className="flex space-x-2">
         <input
           type="number"
           id="increment-value"
-          className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-          placeholder={"Set increment value"}
+          className="w-24 rounded-full border border-teal-300 bg-white py-1 text-center focus:border-teal-500 focus:ring-teal-500"
+          placeholder="Count Increment..."
           value={inputValue}
           onChange={(e) => setInputValue(parseInt(e.target.value) || 1)}
         />
         <button
           type="submit"
-          className="mb-2 mr-2 rounded-lg bg-blue-700 px-5 py-2.5 pt-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="rounded-full bg-teal-500 px-4 py-1 text-sm text-white hover:bg-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-300"
         >
-          Set Increment Value
+          Submit
         </button>
       </form>
-      <button
-        className="mb-2 mr-2 rounded-lg bg-blue-700 px-5 py-2.5 pt-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        onClick = {increaseCount}
-      >
-        Increment
-      </button>
-      <button
-        className="mb-2 mr-2 rounded-lg bg-blue-700 px-5 py-2.5 pt-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        onClick = {decreaseCount}
-      >
-        Decrement
-      </button>
-      <p className="text-2xl text-white">Total Count: {count} </p>
-    </>
+      <div className="text-6xl text-teal-900">{count}</div>
+      <div className="flex space-x-2">
+        <button
+          className="rounded-full bg-teal-500 px-5 py-2 text-white hover:bg-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-300"
+          onClick={decreaseCount}
+        >
+          -
+        </button>
+        <button
+          className="rounded-full bg-teal-500 px-5 py-2 text-white hover:bg-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-300"
+          onClick={increaseCount}
+        >
+          +
+        </button>
+      </div>
+    </div>
   )
 }
