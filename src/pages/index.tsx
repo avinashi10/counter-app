@@ -9,9 +9,8 @@ import { calculateSumCounters } from '../utils/calculateTotal.js';
 
 export default function Home() {
   // SET STATES
-  // State for the number of counters. Initialized to 1 by default.
   const [counterQuantity, setCounterQuantity] = useState(1);
-  // State for the details of each counter. Each counter has 'count' and 'incrementValue'.
+  // State for the details of each counter. Each counter has 'count' and 'incrementValue' values.
   const [counterValues, setCounterValues] = useState([]);
   const [sumAllCounters, setSumAllCounters] = useState(0);
 
@@ -97,24 +96,27 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Getting Started</title>
-        <meta name="description" content="Getting started" />
+        <title>Counter App</title>
+        <meta name="description" content="A simple counter application" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <React.Suspense fallback="Loading...">
+      <main className="min-h-screen bg-gradient-to-b from-teal-50 to-teal-200">
+        <h1 className="text-4xl font-bold text-teal-800 pt-8 text-center">Counter App</h1>
+        <div className="flex flex-col md:flex-row justify-between items-center px-10 py-4">
           <CounterAmountForm setCounterQuantity={setCounterQuantity} />
+          <p className="text-3xl text-teal-800 mt-4 md:mt-0">Grand Total: {sumAllCounters}</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
           {Array.from({ length: counterQuantity }, (_, index) => (
-          <Counter
-            key={index}
-            count={counterValues[index]?.count || 0}
-            incrementValue={counterValues[index]?.incrementValue || 1}
-            setCount={(newCount) => handleCountersUpdate(index, newCount, undefined)}
-            setIncrementValue={(newIncrementValue) => handleCountersUpdate(index, undefined, newIncrementValue)}
-          />
+            <Counter
+              key={index}
+              count={counterValues[index]?.count || 0}
+              incrementValue={counterValues[index]?.incrementValue || 1}
+              setCount={(newCount) => handleCountersUpdate(index, newCount, undefined)}
+              setIncrementValue={(newIncrementValue) => handleCountersUpdate(index, undefined, newIncrementValue)}
+            />
           ))}
-          <p className="text-3xl text-white">Grand Total: {sumAllCounters}!</p>
-        </React.Suspense>
+        </div>
       </main>
     </>
   );

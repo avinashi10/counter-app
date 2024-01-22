@@ -12,23 +12,22 @@ export default function CounterAmountForm({ setCounterQuantity }) {
     localStorage.setItem('counterQuantity', inputValue);
   }
 
-  return(
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="counter-quantity" className="text-xl text-white">Number of Counters:</label>
+  return (
+    <form onSubmit={handleSubmit} className="flex items-center space-x-4 bg-teal-100 p-4 rounded-xl shadow-lg">
+      <label htmlFor="counter-quantity" className="text-lg text-teal-900">Number of Counters:</label>
       <input
         type="number"
         id="counter-quantity"
-        className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+        className="w-24 rounded-full border border-teal-300 bg-white py-1 text-center focus:border-teal-500 focus:ring-teal-500"
         value={inputValue}
         onChange={(e) => setInputValue(parseInt(e.target.value) || 1)}
       />
       <button
         type="submit"
-        className="mb-2 mr-2 rounded-lg bg-blue-700 px-5 py-2.5 pt-2 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        className="rounded-full bg-teal-500 px-4 py-1 text-sm text-white hover:bg-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-300"
       >
         Generate Counters
       </button>
     </form>
-
   )
 }
